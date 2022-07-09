@@ -3,6 +3,8 @@ name: ci
 on:
   pull_request:
     branches: [develop]
+  push:
+    branches: [develop]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,3 +19,12 @@ jobs:
       - run: npm test -- --coverage
         env:
           CI: true // to avoid interaction when running the tests
+      - name: Build project
+        if: github.event_name == 'push'
+        run: npm run build
+      - name: Deploy to staging 
+        if: github.event_name == 'push'
+        run: npx surge --project ./build --domain harsh-sweater.surge.sh  # this will install and run surge
+        env: # To authenticate with surge
+          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
