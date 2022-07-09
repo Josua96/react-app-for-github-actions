@@ -17,5 +17,3 @@ jobs:
       - run: npm test -- --coverage
         env:
           CI: true // to avoid interaction when running the tests
-      
-
