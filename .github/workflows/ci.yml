@@ -27,7 +27,7 @@ jobs:
       - run: npm run format:check
       - run: npm test -- --coverage
         env:
-          CI: true // to avoid interaction when running the tests
+          CI: true # to avoid interaction when running the tests
       - name: Build project
         if: github.event_name == 'push'
         run: npm run build
