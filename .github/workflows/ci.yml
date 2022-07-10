@@ -28,9 +28,22 @@ jobs:
       - run: npm test -- --coverage
         env:
           CI: true # to avoid interaction when running the tests
+      - name: Upload Test Coverage
+        uses: actions/upload-artifact@v1
+        with:
+          name: code-coverage
+          # path where the test coverage report is uploaded.
+          path: coverage
       - name: Build project
         if: github.event_name == 'push'
         run: npm run build
+      - name: Upload Build Folder
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v1
+        with:
+          name: build
+          # path where the test coverage report is uploaded.
+          path: build
       - name: Deploy to staging
         if: github.event_name == 'push'
         run: npx surge --project ./build --domain harsh-sweater.surge.sh # this will install and run surge
