@@ -1,0 +1,57 @@
+name: ci
+
+on:
+  pull_request:
+    branches: [develop, master]
+  push:
+    branches: [develop, master]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache node_modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm # for linux the npm cache is stored in ~/.npm
+          # the key to get from the cache, it should change every time the dependencies change or if the operating system change in the context of the workflow
+          key: ${{ runner.os }}-node-${{hashFiles('**/package-lock.json')}} # the key of your cache
+          # github will use these key in case id does not find a key within the cache equal to one specified in the line above
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Use NodeJS
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm test -- --coverage
+        env:
+          CI: true # to avoid interaction when running the tests
+      - name: Upload Test Coverage
+        uses: actions/upload-artifact@v1
+        with:
+          name: code-coverage
+          # path where the test coverage report is uploaded.
+          path: coverage
+      - name: Build project
+        if: github.event_name == 'push'
+        run: npm run build
+      - name: Upload Build Folder
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v1
+        with:
+          name: build
+          # path where the test coverage report is uploaded.
+          path: build
+      - name: Create a Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy to staging
+        if: github.event_name == 'push'
+        run: npx surge --project ./build --domain harsh-sweater.surge.sh # this will install and run surge
+        env: # To authenticate with surge
+          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
