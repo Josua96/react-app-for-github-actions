@@ -22,7 +22,7 @@ jobs:
       - name: Use NodeJS
         uses: actions/setup-node@v1
         with:
-          node-version: "12.x"
+          node-version: "16.x"
       - run: npm ci
       - run: npm run format:check
       - run: npm test -- --coverage
@@ -45,9 +45,6 @@ jobs:
           # path where the test coverage report is uploaded.
           path: build
       - name: Create a Release
-        uses: actions/setup-node@v1
-        with:
-          node-version: "16.x"
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: npx semantic-release
         env:
