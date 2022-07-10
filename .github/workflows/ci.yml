@@ -2,9 +2,9 @@ name: ci
 
 on:
   pull_request:
-    branches: [develop]
+    branches: [develop, master]
   push:
-    branches: [develop]
+    branches: [develop, master]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -44,6 +44,11 @@ jobs:
           name: build
           # path where the test coverage report is uploaded.
           path: build
+      - name: Create a Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy to staging
         if: github.event_name == 'push'
         run: npx surge --project ./build --domain harsh-sweater.surge.sh # this will install and run surge
