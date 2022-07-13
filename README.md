@@ -1,3 +1,7 @@
+# Badge
+
+![Bagde](https://github.com/Josua96/react-app-for-github-actions/workflows/CI/badge.svg?branch=develop&event=push)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
