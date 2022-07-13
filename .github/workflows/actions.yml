@@ -4,7 +4,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2 # to have access to the source code
-      - uses: ./github/actions/hello # referencing the custom action
+      - uses: ./.github/actions/hello # referencing the custom action
         id: hello
         with:
           who-to-greet: "World"
