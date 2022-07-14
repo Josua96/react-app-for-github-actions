@@ -21,9 +21,9 @@ jobs:
           echo "Time: ${{steps.hello.outputs.time}}"
           echo $HELLO
       - uses: ./.github/actions/hello.docker # referencing the custom action that uses docker
-        id: hello
+        id: hello-docker
         with:
           who-to-greet: "World"
       - run: |
-          echo "Time: ${{steps.hello.outputs.time}}"
+          echo "Time: ${{steps.hello-docker.outputs.time}}"
           echo $HELLO
