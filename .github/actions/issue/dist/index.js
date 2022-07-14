@@ -5031,7 +5031,7 @@ try {
   const body = core.getInput("body");
   const assignees = core.getInput("assignees");
 
-  const oktokit = github.getOctokit(token);
+  const octokit = github.getOctokit(token);
 
   const response = octokit.rest.issues.create({
     owner: github.context.repo.owner,
