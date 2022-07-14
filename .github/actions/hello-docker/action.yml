@@ -1,0 +1,17 @@
+name: Hello World
+author: Josua
+description: Some description
+inputs:
+  who-to-greet:
+    description: "Who to greet"
+    required: true
+    default: Josua test
+outputs:
+  time:
+    description: "The greeting time"
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  # entrypoint:
+  args: # args that will be passed to the dockerfile (so they will be available in the .sh file because it is the entrypoint of the docker file)
+    - $ {{inputs.who-to-greet}}
