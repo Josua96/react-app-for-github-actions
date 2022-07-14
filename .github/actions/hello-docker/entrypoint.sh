@@ -28,5 +28,12 @@ echo "::endgroup::"
 
 # setting an environment variable
 
-echo "::set-env name=HELLO::hello"
+# echo "::set-env name=HELLO::hello"
 
+# let github know that the action has failed
+
+# if [ true ]
+# then
+#   echo 'error'
+#   exit 1 # any non-zero exit code means an error
+# fi
