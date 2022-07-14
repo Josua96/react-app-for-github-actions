@@ -10,7 +10,7 @@ jobs:
           token: ${{secrets.GITHUB_TOKEN}}
           title: Title
           body: Body
-          assignees: "josua96,josuacp"
+          assignees: "josua96,josupc02"
       - run: |
           echo ${{steps.issue.outputs.issue}}
       - uses: ./.github/actions/hello # referencing the custom action
